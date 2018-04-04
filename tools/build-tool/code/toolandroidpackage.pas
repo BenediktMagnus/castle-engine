@@ -229,6 +229,10 @@ var
         Dir := 'app' + PathDelim + 'src' + PathDelim + 'main' + PathDelim +
                'res' + PathDelim + 'mipmap-' + S + 'dpi';
         PackageSaveImage(R, Dir + PathDelim + 'ic_launcher.png');
+
+        Dir := 'app' + PathDelim + 'src' + PathDelim + 'main' + PathDelim +
+               'res' + PathDelim + 'drawable-' + S + 'dpi';
+        PackageSaveImage(R, Dir + PathDelim + 'ic_launcher.png');
       finally FreeAndNil(R) end;
     end;
 
@@ -244,6 +248,7 @@ var
       SaveResized(72, 'h');
       SaveResized(96, 'xh');
       SaveResized(144, 'xxh');
+      SaveResized(192, 'xxxh');
     finally
       if Icon = DefaultIcon then
         Icon := nil else
