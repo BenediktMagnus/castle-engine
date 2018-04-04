@@ -113,4 +113,9 @@ public class ServiceMiscellaneous extends ServiceAbstract
             return false;
         }
     }
+
+    public void sendKeystroke(String key)
+    {
+        messageSend(new String[]{"key-stroke", key});
+    }
 }
