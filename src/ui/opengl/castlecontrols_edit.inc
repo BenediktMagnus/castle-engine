@@ -38,6 +38,7 @@
     procedure SetPaddingHorizontal(const Value: Single);
     procedure SetPaddingVertical(const Value: Single);
     procedure SetFrame(const Value: boolean);
+    function EmulateKeystroke(const Received: TCastleStringList): Boolean;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -143,6 +144,8 @@ begin
   FMaxLength := 0;
   FAutoOnScreenKeyboard := DefaultAutoOnScreenKeyboard;
   Scissor := TScissor.Create;
+
+  Messaging.OnReceive.Add(@EmulateKeystroke);
 end;
 
 destructor TCastleEdit.Destroy;
@@ -229,6 +232,36 @@ begin
   begin
     FFrame := Value;
     VisibleChange([chRectangle]);
+  end;
+end;
+
+function TCastleEdit.EmulateKeystroke(const Received: TCastleStringList): Boolean;
+var
+  LInputPressRelease: TInputPressRelease;
+  Key: Integer;
+begin
+  Result := false;
+
+  if Focused and (Received.Count = 2) and (Received[0] = 'key-stroke') then
+  begin
+    Result := true;
+
+    FillChar(LInputPressRelease, SizeOf(LInputPressRelease), 0);
+    LInputPressRelease.Position := Vector2(0, 0);
+    LInputPressRelease.EventType := itKey;
+    Key := StrToInt(Received[1]);
+    if Key = 8 then
+      LInputPressRelease.Key := keyBackSpace
+    else
+    if Key = 13 then
+      LInputPressRelease.Key := keyEnter
+    else
+    begin
+      LInputPressRelease.Key := keyNone;
+      LInputPressRelease.KeyCharacter := chr(Key);
+    end;
+
+    Press(LInputPressRelease);
   end;
 end;
 
@@ -358,6 +391,9 @@ begin
     Text := SDeleteChars(Clipboard.AsText, AllChars - FAllowedChars);
     Result := ExclusiveEvents;
   end else
+  if Event.IsKey(keyEnter) then
+    SetFocused(false)
+  else
   if (Event.EventType = itKey) and
      (Event.KeyString <> '') and
      (Event.KeyCharacter in AllowedChars) and

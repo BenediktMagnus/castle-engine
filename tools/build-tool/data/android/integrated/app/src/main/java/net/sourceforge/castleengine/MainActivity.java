@@ -11,12 +11,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 
 public class MainActivity extends NativeActivity
 {
     private static final String CATEGORY = "MainActivity";
 
     private ServiceMessaging messaging;
+    private ServiceMiscellaneous miscellaneous;
     private List<ServiceAbstract> services = new ArrayList<ServiceAbstract>();
 
     @Override
@@ -25,7 +27,7 @@ public class MainActivity extends NativeActivity
         ServiceAbstract.logInfo(CATEGORY, "Custom castleengine.MainActivity created");
 
         services.add(messaging = new ServiceMessaging(this));
-        services.add(new ServiceMiscellaneous(this));
+        services.add(miscellaneous = new ServiceMiscellaneous(this));
 
         /* ANDROID-SERVICES-INITIALIZATION */
 
@@ -34,6 +36,30 @@ public class MainActivity extends NativeActivity
         }
 
        jniLanguage(Locale.getDefault().toString());
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event)
+    {
+        if (event.getAction() == KeyEvent.ACTION_UP)
+        {
+            Integer keyCode = event.getUnicodeChar();
+
+            if (keyCode == 0)
+            {
+                Integer tempCode = event.getKeyCode();
+                if (tempCode == 67)
+                    keyCode = 8; //Backspace
+            }
+			else if (keyCode == 10)
+			{
+				keyCode = 13; //Return
+			}
+
+            miscellaneous.sendKeystroke(String.valueOf(keyCode));
+        }
+
+        return super.dispatchKeyEvent(event);
     }
 
     @Override
