@@ -385,6 +385,7 @@ end;
 procedure TCastleLabel.SetCaption(const Value: string);
 begin
   Text.Text := Value;
+  VisibleChange([chRectangle]);
 end;
 
 procedure TCastleLabel.SetAlignment(const Value: THorizontalPosition);
