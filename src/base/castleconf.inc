@@ -348,6 +348,6 @@
 
   Undefine this to conserve around 0.7 MB in exe size.
   All the Text X3D nodes will use standard sans non-bold, non-italic font. }
-{$define CASTLE_EMBED_ALL_3D_FONT_VARIATIONS}
+//{$define CASTLE_EMBED_ALL_3D_FONT_VARIATIONS}
 
 {$endif not CASTLE_CONF_INCLUDED}
