@@ -521,7 +521,7 @@ begin
     R := FRectangles.L[I];
 
     // divide by UIScale, because TCastleLabel.FloatRect will multiply by it...
-    C.Anchor(hpLeft  , R.Left / UIScale);
+    C.Anchor(hpMiddle);
     C.Anchor(vpBottom, R.Bottom / UIScale);
     if C is TCastleLabel then
     begin
@@ -533,9 +533,9 @@ begin
     if I > 0 then
       ItemsBelowHeight += R.Height + UIScale * SpaceBetweenItems(I);
 
-    if C.ControlsCount <> 0 then
-      // divide by UIScale, because TCastleLabel.Rect will multiply by it...
-      C.Controls[0].Anchor(hpLeft, (MaxItemWidth + MarginBeforeAccessoryScaled) / UIScale);
+    //if C.ControlsCount <> 0 then
+    //  // divide by UIScale, because TCastleLabel.Rect will multiply by it...
+    //  C.Controls[0].Anchor(hpLeft, (MaxItemWidth + MarginBeforeAccessoryScaled) / UIScale);
   end;
 end;
 
