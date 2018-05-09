@@ -258,7 +258,7 @@ begin
     else
     begin
       LInputPressRelease.Key := keyNone;
-      LInputPressRelease.KeyCharacter := chr(Key);
+      LInputPressRelease.KeyString := chr(Key);
     end;
 
     Press(LInputPressRelease);
